@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>测试浏览器中 fetch API</h1>
+  <script>
+    window.onload = function () {
+      fetch('/testjson') // 通过 fetch('url') 去请求对应的数据接口
+        .then((response) => { // 在 fetch 中，第一个 then 拿到的不是最终的数据，而是一个 Response 类型的对象
+          // 我们可以调用 response 对象身上的 一个 .json() 方法，返回一个 Promise 对象
+          return response.json();
+        })
+        .then(function (data) {
+          console.log(data);
+        })
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<%- include('../layouts/header.ejs') %>
+
+<div class="container-fluid">
+  <h1>
+    <%= article.title %>
+    <!--只有当前登录的作者 id 和当前显示的文章的 authorId 相等的时候，才显示编辑连接-->
+    <!--在当前 info 页面，能不能拿到当前文章的id???  结果：能拿到 article.id -->
+    <!--在当前 info 页面，能不能拿到当前文章作者的Id???  结果：能拿到 article.authorId -->
+    <!--在当前 info 页面，能不能拿到当前登录用户的Id??? 结果：能，user.id-->
+
+    <% if(user && (user.id === article.authorId)){ %>
+      <a href="/article/edit?id=<%= article.id %>" class="btn btn-link pull-right">编辑此文章</a>
+    <% } %>
+
+    
+  </h1>
+  <p>
+    <small><strong>作者:</strong><%= article.user.nickname %></small>&nbsp;&nbsp;&nbsp;&nbsp;
+    <small><strong>发表时间:</strong><%= article.ctime %></small>&nbsp;&nbsp;&nbsp;&nbsp;
+    <small><strong>最后修改时间:</strong><%= article.mtime %></small>
+  </p>
+  <hr>
+  <div class="content">
+    <%- article.content %>
+  </div>
+</div>
+
+<%- include('../layouts/footer.ejs') %>

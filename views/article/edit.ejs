@@ -1,0 +1,56 @@
+<%- include('../layouts/header.ejs') %>
+  <link rel="stylesheet" type="text/css" href="/node_modules/mditor/dist/css/mditor.min.css">
+  <script src="/node_modules/mditor/dist/js/mditor.min.js"></script>
+
+  <div class="container-fluid">
+    <h1>编辑文章页</h1>
+    <hr>
+    <form id="form">
+      <input type="hidden" name="id" value="<%= article.id %>" id="articleId">
+      <div class="form-group">
+        <label>文章标题:</label>
+        <input type="text" name="title" maxlength="50" class="form-control" id="title" value="<%= article.title %>">
+      </div>
+
+      <div class="form-group">
+        <label>文章内容:</label>
+        <textarea rows="5" name="content" class="form-control" id="editor"><%= article.content %></textarea>
+      </div>
+
+      <div class="form-group clearfix">
+        <input type="submit" value="保存文章" class="btn btn-primary pull-right">
+      </div>
+    </form>
+  </div>
+
+  <script>
+    $(function () {
+      // 把页面上id为 editor 的textarea改造成一个Markdown编辑器
+      var mditor = Mditor.fromTextarea(document.getElementById('editor'));
+
+
+      $('#form').on('submit', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+          url: '/article/edit',
+          data: {
+            id: $('#articleId').val(), // 被编辑的文章的id 
+            title: $('#title').val().trim(), // 被编辑的文章的title
+            content: mditor.value // 通过 markdown 编辑器实例，获取到文章内容
+          },
+          type: 'post',
+          dataType: 'json'
+        }).then(function (result) {
+          // console.log(result);
+          if (result.err_code === 0) {
+            location.href = '/article/info?id=<%= article.id %>';
+          } else {
+            alert(result.msg);
+          }
+        });
+      });
+    });
+  </script>
+
+  <%- include('../layouts/footer.ejs') %>
